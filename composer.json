@@ -3,7 +3,7 @@
     "description": "Demo App to show cryodrift features",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.15",
+    "version": "0.1.16",
     "require": {
         "php": ">=8.4",
         "cryodrift/fw": "^0.1.0",
