@@ -8,14 +8,11 @@
         "php": ">=8.4",
         "cryodrift/fw": "^0.1.0",
         "cryodrift/user": "^0.1.0",
-        "cryodrift/fakepost": "^0.1.0",
         "cryodrift/gcss": "^0.1.0"
     },
-    "authors": [
-        {
-            "name": "chrisg"
-        }
-    ],
+    "require-dev": {
+        "cryodrift/fakepost": "^0.1.0"
+    },
     "autoload": {
         "psr-4": {
             "cryodrift\\demo\\": ""
