@@ -24,5 +24,18 @@ php index.php -echo -sessionuser="test@localhost.lan" /demo
 php index.php -echo -sessionuser="test@localhost.lan" /demo/cli
 
 php index.php -echo -sessionuser="test@localhost.lan" /demo/api
+                  
+## ENV settings
+
+USER_HTTPS="0"
+USER_USE2FA="0"
+USER_HIDELOGIN="0"
+
+## start Server
+
+php vendor\bin\cryodrift.php -sessionuser="test@localhost.lan" -echo /sys serv -index=vendor\bin\cryodrift.php
+
+open localhost:port/demo
+
 
 
