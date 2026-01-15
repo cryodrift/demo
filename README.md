@@ -1,7 +1,6 @@
+# Demo App 
 
-## sessionuser
-
-its just used to simmulate a authenticated user 
+- -sessionuser is used to simmulate a authenticated user 
 
 ## installation with (composer does this for you)
 

@@ -1,6 +1,7 @@
 <?php
 
 return [
+  'LICENSE',
   '\src\demo\Api.php',
   '\src\demo\Cache.php',
   '\src\demo\Cli.php',
