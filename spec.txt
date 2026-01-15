@@ -1,0 +1,152 @@
+# Demo Spec (synced from src/demo)
+
+## Purpose
+Document the concrete pages, components, loaders, endpoints, and CLI commands that actually exist under `src/demo` so UI and API wiring stays consistent with the code.
+
+## Conventions (from current code)
+- Pages are composed from HtmlUi templates in `src/demo/ui/` and component templates under `ui/products/`.
+- JS client uses `src/demo/ui/component.js`:
+  - `hrefloader(e, url, root)` intercepts links under `root` and fetches/replaces HTML.
+  - `formloader(e, url)` reads optional hooks:
+    - `data-formloader-before="/component.js <cmds...>"`
+    - `data-formloader-after="/component.js <cmds...>"`
+    - When `action` matches `url/<component>`, it posts the form and replaces that component.
+  - Infinite scroll hooks: set on containers via
+    - `data-scroll="scrollloader|/demo/api/formloader|<component>|/demo/<component>/<search>|products_page|<max>"`
+    - `data-now-handler="scrollbarinit|…same params…"` then `runDataNowHandlers` initializes.
+  - `refresh(e, url)` triggers a component reload.
+- Header/nav/menu come from repository `comp_header()` and translations.
+
+## Config
+- Location: `src/demo/config.php`.
+- Purpose: defines demo/app settings (e.g., DB name, storage dir, templates dir, currency, default language, menus, routes) and reads environment variables.
+- Access rules:
+  - Always read env via this `config.php`.
+  - Do not use `Core::env()` outside of a `config.php` file; consume config via `Config`/injected values.
+- Install behavior:
+  - The `cryodrift/tools/Cli install` command reads `src/demo/config.php` and writes the resolved values into the central cache so both Web and CLI can access them efficiently at runtime.
+
+## Component routing (from config.php)
+- Source: `$cfg[cryodrift\demo\Api::class]['components']` in `src/demo/config.php`.
+- Purpose: declaratively maps component/data methods to URL paths consumed by Web/API handlers.
+- Mapping syntax:
+  - Each entry is `'<componentName>' => <routes>`.
+  - `<routes>` can be a string path segment, an array of segments, or a list of such definitions.
+    - String: `'about'` → `/demo/about`.
+    - Array: `['product', ['id']]` → `/demo/product/{id}` (placeholder in `[]` is a path parameter).
+    - Nested list: `['products', ['products', ['search']]]` → `/demo/products` and `/demo/products/{search?}`.
+  - Component endpoints use their own names as paths when listed as strings, e.g. `['comp_products_page']` → `/demo/comp_products_page`.
+- Notable mappings (examples):
+  - `cont_home` → `['', 'home']` → `/demo` and `/demo/home`.
+  - `comp_products` → `['products', ['products', ['search']]]` → `/demo/products` and optional search segment.
+  - `comp_products_page` → `['comp_products_page', ['comp_products_page', ['search']]]` → component paging endpoint with optional search.
+  - `comp_product` → `[['product', ['id']]]` → `/demo/product/{id}`.
+  - `comp_login` → `['login','logout']` → `/demo/login` and `/demo/logout`.
+  - Admin group (selected):
+    - `cont_admin` → `['admin', ['admin','orders'], ['admin','order',['orderid']], ['admin','users'], ['admin','user',['id']], ['admin','products'], ['admin','product',['id']]]`.
+    - Page components like `comp_admin_order` mirror their subpaths.
+- Header routing:
+  - `comp_header` is auto-mapped to all component routes by merging the defined component routes (see line where it’s built via `array_merge(...array_values(...))`). This ensures header is available on all pages.
+- Role gating vs routing:
+  - `roleconfig` defines which components are available per role (`admin`, `user`, `unknown`). It restricts rendering/access but does not change the path patterns.
+- Menus:
+  - `$cfg[Api::class]['menus'][<role>]` maps top-level links (`''`, `products`, `about`, `contact`, `account`, `cart`, `admin`) to labels; `Repository::comp_header()` uses this to build navigation and highlight `selected` based on the current path.
+
+## Top Navigation (generated)
+- Built by `Repository::comp_header()` from `$menus[$role]` and translations.
+- Language switch select is rendered from `Translations`.
+- Login/logout buttons toggle based on session user (see `comp_header`).
+
+## Routes → Pages → Components (implemented)
+- `/demo` Home
+  - Data: `Repository::cont_home()` → internally calls `comp_products_page()` and exposes as `cont_home`.
+- `/demo/products/{search?}` Products list page
+  - Data: `Repository::comp_products()`
+  - Sets: `genrerow` (from `db/s_genre.sql`), `search`, `limitselector` (Select), `maxpages`, scroll/formloader attributes.
+  - Component used inside: `comp_products_page`.
+- `/demo/comp_products_page/{search?}` Component endpoint for paging/scrolling
+  - Data: `Repository::comp_products_page()` → returns `products` array and `page`.
+- `/demo/comp_product/{id}` Product detail component endpoint
+  - Data: `Repository::comp_product($id)` with full template per row.
+- `/demo/login` Login page component
+  - Data: `Repository::comp_login()` sets `_referer_` to `/demo/login`.
+- Header is present on all pages via `comp_header`.
+
+## API Endpoints (used by client)
+- `GET/POST /demo/api/formloader`
+  - Used by infinite scroll and form pagination updates for `comp_products_page`.
+- `GET /demo/api/hrefloader`
+  - Used by limit selector change: `data-change="replacequery|limit|self|1 refresh|/demo/api/hrefloader"`.
+Notes:
+- Client fetches HTML fragments and replaces components; not JSON/error-contract based here.
+
+## Components and Attributes (implemented)
+- `comp_products`
+  - Provides: `genrerow`, `search`, `limitselector`, `maxpages`, `data-formloader-before`, `data-formloader-after`, `data-scroll`, `data-now-handler`.
+- `comp_products_page`
+  - Provides: `products` (array of HtmlUi items rendered from `ui/products/tplprev`), `page`, `_referer_` (`/demo/comp_products_page`).
+- `comp_product`
+  - Provides: `product` (HtmlUi rendered from `ui/products/tplfull`) or empty if not found.
+- `comp_header`
+  - Provides: `menulinks` (with `selected`), `langcode`, `languageswitch` select, `btnlogout`/`btnlogin` visibility, `formtranslation` JSON.
+- `comp_login`
+  - Provides: `_referer_` (`/demo/login`), `comp_login` placeholder.
+
+## Data Models (from code)
+- Product (table `products`, selected fields used in UI):
+  - `id`, `slug`, `tplprev`, `tplfull`, `isactive`, `price`, `currency`, `details` (JSON incl. `title`, `subtitle`, `authors/author`, `categories/genre`, `published`, `isbn`, `smallThumbnail`, `thumbnail`), `cartid`, `stock`.
+  - UI formatting: `price` formatted with `NumberFormatter::CURRENCY`; `disabledproduct` when `stock===0`; image URLs prefer HTTPS; author string prefixed with "by ".
+- Enums/const (Repository):
+  - Cart types: `cart`, `order`, `wish`, `compare`.
+  - Cart status: `pending, processing, paid, partial, shipped, delivered, canceled, failed, returned`.
+  - Order status: `pending, paid, partial, shipped, delivered, returned, refunded, canceled, failed`.
+
+## Loader/Action Wiring Examples (from code)
+- Form with paging/search on products page:
+  - `data-formloader-before="/component.js remquery|products_page"`
+  - `data-formloader-after="/component.js collect|input[name=search] replaceurl|collection|append|/demo/products/"`
+- Scroll and now-handlers for infinite scroll:
+  - `data-scroll="scrollloader|/demo/api/formloader|comp_products_page|/demo/comp_products_page/<search>|products_page|<max>"`
+  - `data-now-handler="scrollbarinit|…same params…"`
+- Limit selector (Select widget):
+  - `data-change="replacequery|limit|self|1 refresh|/demo/api/hrefloader"`
+
+## Routing & Layout
+- Root layout: `ui/base/main.html` with header (`comp_header`), outlet, footer.
+- Placeholders use `{{comp_*}}`/`{{cont_*}}` as in other demos.
+
+## UX Rules
+- Debounced network calls in `component.js` (150ms) for `hrefloader` and `formloader`.
+- Meta tags and ARIA not explicitly set here; translations for form errors are provided via `formtranslation`.
+
+## Accessibility & Keyboard
+- Semantic controls, labels, focus management on route transition, ARIA live for cart updates.
+
+## Styling
+- Use `cryodrift/gcss` and `Shorts.php` classnames; dark mode via `themeswitcher.html` (as in templates).
+
+## Performance
+- Infinite scroll with server-side pagination; FTS-backed search via `FtsProducts` when `search` present.
+
+## Testing & Observability
+- Not defined in code; consider adding unit tests for Repository methods and JS event handlers.
+
+## Seed & Dev Experience
+- CLI in `src/demo/Cli.php` provides helpers:
+  - `tables()` → list tables
+  - `versions()` → list schema versions
+  - `dbread <method> [id] [page] [limit]` → call read methods
+  - `dbwrite <method> <col|[cols]> <val|[vals]> [id]` → call write methods
+  - `importjs <file> [write=false]` → import JS-like array into `products`
+  - `googlebooks <q> [after] [full=false] [page=0] [write=false]` → fetch Google Books, map to products; writes when `write`
+  - `trans [write=false]` → create translation files
+  - `testdb <id> <val>` → test DB helpers
+  - `deletedoubles <table> [write] [hidecol[]] [addcol[]]` → find duplicates
+  - `checktable <table>` → check table schema
+  - `install` → initialize DB and assets
+  - `usercreate <name> [pass]` → create user
+
+## Notes
+- Do not change code in `cryodrift\fw` namespace; reuse framework utilities.
+- Read env via `src/demo/config.php`.
+- Keep attributes stringly-typed; no unnecessary casting/defaults.

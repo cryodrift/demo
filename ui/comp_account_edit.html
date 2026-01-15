@@ -1,0 +1,19 @@
+<h1>{{Account Settings}}</h1>
+<div class="g-card">
+    <form  class="g-formgroup  g-list" data-keydown="press|Enter|tab" method="POST" action="/demo/api/formloader/comp_account_edit">
+        <div class=" g-row g-mb1">
+            <label><span>{{Name}}</span><input type="text" name="name" value="{{name}}" autocomplete="username" required/></label>
+        </div>
+        <div class=" g-row g-mb1">
+            <label><span>{{Email}}</span><input type="email" name="email" value="{{email}}" autocomplete="email" required/></label>
+        </div>
+        <div  class="g-formgroup ver">
+            <label><span>{{Current Password (leave blank to keep current)}}</span><input type="password" name="password" autocomplete="password"/></label>
+        </div>
+        <div  class="g-formgroup ver">
+            <label><span>{{New Password (leave blank to keep current)}}</span><input type="password" name="newpassword" autocomplete="new-password"/></label>
+        </div>
+        <button type="submit" class="g-btn g-btn-base">{{Update Settings}}</button>
+        <a href="/demo/account" data-click="back" class="g-btn g-btn-base g-btn-secondary" style="margin-left: 0.5rem;">{{Back}}</a>
+    </form>
+</div>

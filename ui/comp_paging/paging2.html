@@ -1,0 +1,70 @@
+<div class="paging2-container d-flex flex-column flex-md-row align-items-md-center justify-content-md-between my-3 my-sm-2 gap-2 gap-sm-1 position-relative">
+    <div class="paging2-page-info d-flex justify-content-between align-items-center">
+        <!-- Page indicator and total items -->
+        <div class="page-info small text-muted mb-2 mb-sm-1 mb-md-0 d-md-inline-block text-md-start me-md-3">
+            {{@}}page_indicator{{@}}
+            <span class="page-indicator me-2">{{Page {{current_page}} of {{total_pages}}}}</span>
+            {{@}}page_indicator{{@}}
+
+            {{@}}total_items_display{{@}}
+            <span class="total-items">{{(total_items items total)}}</span>
+            {{@}}total_items_display{{@}}
+        </div>
+
+        <!-- Page size selector -->
+        {{@}}page_size_selector{{@}}
+        <div class="page-size-selector small text-muted d-flex flex-row align-items-center">
+            <label for="page-size-select" class="me-2 me-sm-1 col-auto">{{Items per page:}}</label>
+            <select id="page-size-select" class="form-select form-select-sm" onchange="window.location.href=this.value">
+                {{@}}page_size_options{{@}}
+                <option value="{{url}}" {{selected}}>{{label}}</option>
+                {{@}}page_size_options{{@}}
+            </select>
+        </div>
+        {{@}}page_size_selector{{@}}
+
+    </div>
+    <!-- Pagination navigation -->
+    <nav aria-label="Page navigation" class="mt-1 mt-sm-0 mt-md-0 d-flex justify-content-center">
+        <ul class="{{css_class}} pagination-sm mb-0">
+            <!-- Skip backward button -->
+            {{@}}first_last_buttons{{@}}
+            <li class="{{item_class}} {{first_active}}">
+                <a class="{{link_class}}" href="{{skip_backward_url}}" aria-label="{{Skip Backward}}">
+                    <span aria-hidden="true">&laquo; {{items_per_skip}}</span>
+                </a>
+            </li>
+            {{@}}first_last_buttons{{@}}
+
+            <!-- Previous button -->
+            <li class="{{item_class}} {{previous_active}}">
+                <a class="{{link_class}}" href="{{prev_page_url}}" aria-label="{{Previous}}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page links -->
+            {{@}}links{{@}}
+            <li class="{{item_class}} {{active}}">
+                <a class="{{link_class}}" href="{{url}}">{{page}}</a>
+            </li>
+            {{@}}links{{@}}
+
+            <!-- Next button -->
+            <li class="{{item_class}} {{next_active}}">
+                <a class="{{link_class}}" href="{{next_page_url}}" aria-label="{{Next}}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+
+            <!-- Skip forward button -->
+            {{@}}last_button{{@}}
+            <li class="{{item_class}} {{last_active}}">
+                <a class="{{link_class}}" href="{{skip_forward_url}}" aria-label="{{Skip Forward}}">
+                    <span aria-hidden="true">{{items_per_skip}} &raquo;</span>
+                </a>
+            </li>
+            {{@}}last_button{{@}}
+        </ul>
+    </nav>
+</div>

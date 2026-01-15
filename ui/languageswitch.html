@@ -1,0 +1,28 @@
+<div class="g-container g-actions">
+
+    <form action="/demo/api/formloader/comp_header">
+        <label class="">
+            <span class="g-p1 g-btn" data-click="collect|parent\\select.g-dh show|collection debug stopif|collection collect|parent\\select:not(.g-dh) hide|collection">{{Language}} {{langcode}}</span>
+            <select name="lang" class="g-dh g-btn g-btn-base g-btn-secondary" data-change="submit">
+                {{@}}select{{@}}
+                <option value="{{value}}" {{selected}}>{{name}}</option>
+                {{@}}select{{@}}
+            </select>
+        </label>
+    </form>
+
+    <div class="g-dh" data-role="formtranslations-data">
+        {{formtranslation}}
+    </div>
+    <script type="module">
+       import {setTranslations, addFormValidationTitles} from '/component.js';
+
+       const trans = document.querySelector('div[data-role="formtranslations-data"]');
+       // console.log('module', trans)
+       const t = trans.innerHTML.trim();
+       setTranslations(JSON.parse(t))
+       addFormValidationTitles(document)
+    </script>
+
+</div>
+

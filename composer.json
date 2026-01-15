@@ -1,0 +1,24 @@
+{
+    "name": "cryodrift/demo",
+    "description": "Demo App to show cryodrift features",
+    "type": "library",
+    "license": "Apache-2.0",
+    "version": "0.1.1",
+    "require": {
+        "php": ">=8.4",
+        "cryodrift/fw": "^0.1.31",
+        "cryodrift/user": "^0.1.6",
+        "cryodrift/fakepost": "^0.1.8",
+        "cryodrift/gcss": "^0.1.5"
+    },
+    "authors": [
+        {
+            "name": "chrisg"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "cryodrift\\demo\\": ""
+        }
+    }
+}

@@ -1,0 +1,28 @@
+<div class="g-w" data-scrollable-page="{{page}}">
+    <table class="g-tlf">
+        <thead>
+        <tr>
+            <th>{{User}}</th>
+            <th>{{Order ID}}</th>
+            <th>{{Date}}</th>
+            <th>{{Products}}</th>
+            <th>{{Total}}</th>
+            <th>{{Status}}</th>
+            <th>{{Actions}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{@}}row{{@}}
+        <tr id="order_{{id}}">
+            <td class="g-p1">{{username}}</td>
+            <td>{{ordernr}}</td>
+            <td>{{ordered}}</td>
+            <td>{{productcount}}</td>
+            <td>{{total}}</td>
+            <td><span class="g-status-{{status}} badge badge-info">{{status}}</span></td>
+            <td class="g-actions"><a href="/demo/admin/order/{{ordernr}}" class="g-btn g-btn-base g-btn-secondary">{{View}}</a></td>
+        </tr>
+        {{@}}row{{@}}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,17 @@
+/* comp_paging component styles - mirrors paging2 styles */
+/* Custom styles that Bootstrap doesn't provide */
+.paging2-container .page-size-selector select:hover {
+    border-color: #999;
+}
+
+.paging2-container .page-size-selector select:focus {
+    border-color: #007CB2;
+    box-shadow: 0 0 0 2px rgba(0, 124, 178, 0.2);
+}
+
+/* Note: Mobile styles are handled by Bootstrap 5 utility classes in the HTML:
+   - Responsive margins: my-3 my-sm-2, me-2 me-sm-1, etc.
+   - Responsive spacing: gap-2 gap-sm-1
+   - Small form controls: form-select-sm
+   - Small pagination: pagination-sm
+*/

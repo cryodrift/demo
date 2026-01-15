@@ -1,0 +1,19 @@
+<div class="g-card" style="max-width: 500px; margin: 2rem auto;">
+    <h1>{{Login}}</h1>
+    <form  class="g-formgroup" method="POST" action="/user/login" data-submit="addredirect" >
+        <div>
+            <label><span>{{Email}}</span> <input type="email" name="user" required autocomplete="email"/></label>
+        </div>
+        <div class="">
+            <label><span>{{Password}}</span> <input type="password" name="password" required autocomplete="current-password"/></label>
+        </div>
+        <button type="submit" class="g-btn g-btn-base">{{Login}}</button>
+    </form>
+    <p style="margin-top: 1.5rem;">{{Don't have an account?}} <a href="/demo/register">{{Register here}}</a></p>
+    <p><a href="/demo/forgotpassword">{{Forgot password?}}</a></p>
+    <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 4px;">
+        <p style="font-size: 0.9rem;"><strong>{{Demo Accounts}}</strong></p>
+        <p style="font-size: 0.9rem;">Admin: admin@cryodrift.lan / admin123</p>
+        <p style="font-size: 0.9rem;">Customer: customer@example.com / password123</p>
+    </div>
+</div>

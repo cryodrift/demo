@@ -1,0 +1,20 @@
+<div class="g-w" data-scrollable-page="{{page}}">
+    <table class="g -tlf">
+        <thead>
+        <tr class="g-w g-ohc">
+            <th>{{Name}}</th>
+            <th>{{Email}}</th>
+            <th>{{Role}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{@}}row{{@}}
+        <tr id="admin_user_{{id}}">
+            <td class="g-p1"><a href="/demo/admin/user/{{id}}">{{name}}</a></td>
+            <td>{{email}}</td>
+            <td>{{role}}</td>
+        </tr>
+        {{@}}row{{@}}
+        </tbody>
+    </table>
+</div>
