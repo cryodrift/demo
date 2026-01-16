@@ -22,7 +22,7 @@ trait Comp_account
     public function comp_account_edit(Context $ctx, array $data = []): array
     {
         $out = [];
-        if (!empty($data)) {
+        if (!empty($data) && Core::getValue('password', $data) === $ctx->password()) {
             Core::echo(__METHOD__, $data);
             $data = $this->modAccount($data);
         } else {
