@@ -1,0 +1,56 @@
+<script type="module">
+   import {addCustomFormErrors, addFormValidationTitles, setTranslations, fetchandreplace} from '/component.js';
+   import {setQueryParam, dataListener, dataqueryclick, dataObserver} from '/system.js';
+
+
+   // the following comment is a placeholder for the translation array
+   // KEEP THIS LINE setTranslations is used there >. {{formtranslation}}
+
+   document.addEventListener('DOMContentLoaded', () => {
+      localStorage.clear()
+      const qs = new URLSearchParams(location.search);
+      qs.forEach((v, k) => localStorage.setItem(k, v));
+      // console.log('storage', localStorage)
+      window.addEventListener("pushstate", (e) => {
+         localStorage.clear()
+         const qs = new URLSearchParams(location.search);
+         qs.forEach((v, k) => localStorage.setItem(k, v));
+         // console.log('pushstate', localStorage)
+      });
+      window.addEventListener("popstate", (e) => {
+         // console.log('popstate', e)
+         // console.log('popstate', localStorage)
+         history.replaceState(null, '', '?')
+         // console.log('popstate', localStorage)
+         const url = new URL(location.href);
+         for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (!k) continue;
+            const v = localStorage.getItem(k);
+            if (v === null || v === '') {
+               url.searchParams.delete(k);
+            } else {
+               url.searchParams.set(k, v);
+            }
+         }
+         history.replaceState(
+            history.state,
+            '',
+            url.pathname +
+            (url.searchParams.toString() ? `?${url.searchParams.toString()}` : '') +
+            url.hash
+         );
+         fetchandreplace('', '/demo/api/hrefloader', location.pathname, undefined)
+      });
+
+      // scrollable()
+      addFormValidationTitles(document)
+      addCustomFormErrors()
+      dataObserver(document.body)
+      dataListener(document)
+      dataqueryclick(document)
+
+      const spinner = document.getElementById('spinner-overlay')
+      spinner.classList.add('g-dn')
+   })
+</script>

@@ -1,0 +1,55 @@
+<table>
+    <thead>
+    <tr>
+        <th>{{Info}}</th>
+        <th>{{Price}}</th>
+        <th>{{Quantity}}</th>
+        <th>{{Subtotal}}</th>
+        <th>{{Actions}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{@}}cartrow{{@}}
+    <tr>
+        <td class="g-p1"><a href="/demo/product/{{id}}">{{info}}</a></td>
+        <td>{{price}}</td>
+        <td>
+            <form method="POST" action="/demo/api/formloader/comp_cart" style="display: inline-flex; gap: 0.5rem; align-items: center;">
+                <input type="hidden" name="{{actionmethod}}" value="MOD"/>
+                <input type="hidden" name="id" value="{{id}}"/>
+                <input type="number" name="amount" value="{{amount}}" min="1" style="width: 70px;"/>
+                <button type="submit" class="g-btn g-btn-base g-btn-secondary">{{Update}}</button>
+            </form>
+        </td>
+        <td>{{total}}</td>
+        <td>
+            <form method="POST" action="/demo/api/formloader/comp_cart" style="display: inline;">
+                <input type="hidden" name="{{actionmethod}}" value="DEL"/>
+                <input type="hidden" name="id" value="{{id}}"/>
+                <input type="hidden" name="cartid" value="{{cartid}}"/>
+                <button type="submit" class="g-btn g-btn-base g-btn-danger">{{Remove}}</button>
+            </form>
+        </td>
+    </tr>
+    {{@}}cartrow{{@}}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3"></td>
+        <td style="font-weight: bold;">{{Summe:}} {{summe}}</td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+        <td style="font-weight: bold;">{{Mwst:}} {{mwst}}</td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+        <td style="font-weight: bold;">{{Total:}} {{total}}</td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table>

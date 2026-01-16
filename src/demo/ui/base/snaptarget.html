@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scroll Snap Magic Css</title>
+    <meta name="description"
+          content="In this example, there is a scroll event listener which detects if the scroll position is within 200 pixels of the top of the “snaptarget” div. If it is, then it triggers an animation to “snap” the scroll position to the top of the div. As this animation is driven by JavaScript on the browser’s main thread, it can be interrupted by other JavaScript running in other tabs or other windows. Therefore, the animation can end up looking janky and not as smooth as intended. Instead, using the CSS snap-points property will allow the browser to run the animation asynchronously, providing a smooth visual effect to the user.">
+    <style>
+        body, /* blink currently has bug that requires declaration on `body` */
+        html {
+            scroll-snap-type: y proximity;
+        }
+
+        .snaptarget {
+            scroll-snap-align: start;
+            position: relative;
+            top: 200px;
+            height: 200px;
+            background-color: green;
+        }
+    </style>
+</head>
+<body style="height: 5000px">
+
+<div class="snaptarget"></div>
+</body>
+</html>

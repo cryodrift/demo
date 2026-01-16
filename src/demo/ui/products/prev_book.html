@@ -1,0 +1,24 @@
+<div class="g-card">
+    {{@if@}}imageurlbig|
+    <div class="g-oh g-w g-fc g-fm">
+        <img class="" src="{{imageurlbig}}" alt="{{title}}" style="max-height: 185px;"/>
+    </div>
+    {{@if@}}
+    <div class="g-f g-fc">
+        <h4 class="g-shorttext">{{title}}</h4>
+        <details>
+            <summary class="g-shorttext">{{author}}</summary>
+            <p class="author">{{author}}</p>
+        </details>
+
+        <p class="price">{{price}}</p>
+        <div class="g-f g-fr g-gg1 g-ggh g-tjcc">
+            <a href="/demo/product/{{id}}" class="g-btn g-btn-small g-btn-base">{{View Details}}</a>
+            <form method="POST" action="/demo/api/formloader/comp_cart">
+                <input type="hidden" name="id" value="{{id}}"/>
+                <input type="hidden" name="{{actionmethod}}" value="add"/>
+                <button type="submit" class="g-btn g-btn-small g-btn-base {{disabledproduct}}" style="opacity: 1;">{{Add to Cart}}</button>
+            </form>
+        </div>
+    </div>
+</div>
