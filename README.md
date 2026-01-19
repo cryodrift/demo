@@ -1,12 +1,17 @@
 # Demo App 
 
-- -sessionuser is used to simmulate a authenticated user 
+This creates a Single Page App featuring a simple Webshop
+
+
+## Installation
+
+composer require cryodrift/demo
 
 ## installation with (composer does this for you)
 
 php index.php -echo /sys install
 
-## run installers (run package > Cli::install)
+## run installers (runs packagedir Cli::install)
 
 php index.php -echo -sessionuser="test@localhost.lan" /sys modules 
  
@@ -37,7 +42,7 @@ USER_HIDELOGIN="0"
 
 php vendor\bin\cryodrift.php -sessionuser="test@localhost.lan" -echo /sys serv -index=vendor\bin\cryodrift.php
 
-open localhost:port/demo
+open in your browser localhost:port/demo
 
 
 
