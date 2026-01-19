@@ -19,10 +19,9 @@ if (!isset($ctx)) {
 $cfg = $ctx->config();
 
 if (Core::env('USER_USEAUTH')) {
-    //DEPRECATED this global block is not usefull for components
-//    \cryodrift\user\Auth::addConfigs($ctx, [
-//      'demo/api/formloader',
-//    ]);
+    \cryodrift\user\Auth::addConfigs($ctx, [
+      'demo/images',
+    ]);
     // when we have a session we use it, but we dont need to be logged in to show the route
     \cryodrift\user\Auth::addConfigs($ctx, [
       'demo',

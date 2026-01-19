@@ -6,7 +6,9 @@
 
 php index.php -echo /sys install
 
-php index.php -echo -sessionuser="test@localhost.lan" /sys modules -dir=src\demo
+## run installers (run package > Cli::install)
+
+php index.php -echo -sessionuser="test@localhost.lan" /sys modules 
  
 ## import testdata
 
