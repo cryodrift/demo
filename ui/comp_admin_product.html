@@ -13,7 +13,7 @@
         </label>
     </form>
 
-    <form class="g-formgroup" method="POST" data-input="addclass|button[name=save]|g-btn-secondary ifchange|self\\input|self\\textarea|self\\select|self\\checkbox remclass|button[name=save]|g-btn-secondary" data-keydown="press|Enter|tab" action="/demo/api/formloader/comp_admin_product" autocomplete="on">
+    <form class="g-formgroup" method="POST" data-formloader-before="/component.js btn|save|id btn|new|id" data-input="addclass|button[name=save]|g-btn-secondary ifchange|self\\input|self\\textarea|self\\select|self\\checkbox remclass|button[name=save]|g-btn-secondary" data-keydown="press|Enter|tab" action="/demo/api/formloader/comp_admin_product" autocomplete="on">
         <input type="hidden" name="{{actionmethod}}" value="MOD">
         <input type="hidden" name="id" value="{{id}}">
         <div class="g-actions">
@@ -21,6 +21,7 @@
             <p class="g-gr"><strong>{{InCheckouts}}</strong>{{checkout}}</p>
             <p class="g-gr"><strong>{{Sold}}</strong>{{sold}}</p>
             <button type="submit" class="g-btn g-btn-base g-btn-secondary g-btn-small" name="save" value="{{id}}">{{Save}}</button>
+            <button type="submit" class="g-btn g-btn-base g-btn-secondary g-btn-small" name="new" value="">{{New}}</button>
         </div>
 
         <div class="g-f g-frc g-m1 g-ml g-mr g-taicc g-p1c g-plc g-ptc g-pbc">

@@ -292,7 +292,7 @@ trait Comp_admin
         return (int)ceil($maxfloat) - 1;
     }
 
-    public function comp_admin_product(FtsProducts $fts, Context $ctx, int $id, int $version = 0, array $data = []): array
+    public function comp_admin_product(FtsProducts $fts, Context $ctx, int $id = 0, int $version = 0, array $data = []): array
     {
         $out = [];
         switch (Core::getValue($this->config->actionmethod, $data)) {
@@ -319,7 +319,14 @@ trait Comp_admin
 //                Core::echo(__METHOD__, $data);
 
                 $cols = $this->columns('products', ['isgroup', 'cartid', 'checkout', 'sold']);
-                $this->runUpdate($id, 'products', $cols, $data);
+
+                if ($id) {
+                    $this->runUpdate($id, 'products', $cols, $data);
+                } else {
+                    unset($cols['id']);
+                    unset($data['id']);
+                    $id = $this->runInsert('products', $cols, $data);
+                }
                 $data = Core::extractKeys($data, $cols);
                 $fts->ftsConnect($this);
                 $fts->skipexisting = true;
@@ -327,31 +334,41 @@ trait Comp_admin
                 break;
             default:
         }
-        $data = $this->runSelect('products', ['id'], ['id' => $id])->fetch();
+        if ($id) {
+            $data = $this->runSelect('products', ['id'], ['id' => $id])->fetch();
+        } else {
+            $data = [];
+        }
         $templates = Core::iterate(Core::dirList(Main::path($this->tpldir . '/products')), fn(SplFileInfo $file) => $file->getBasename());
         $data['tplprev'] = new Select('tplprev', $templates, Core::getValue('tplprev', $data, '', true), $this->translations, '');
         $data['tplfull'] = new Select('tplfull', $templates, Core::getValue('tplfull', $data, '', true), $this->translations, '');
         $data['currency'] = new Select('currency', ['EUR', 'USD'], Core::getValue('currency', $data, '', true), $this->translations, '');
         $data['isactive'] = Core::getValue('isactive', $data, '', true) ? 'checked' : '';
         $data['details'] = Core::catch(fn() => $this->renderInputs(Core::jsonRead(Core::value('details', $data, '[]', true))));
-        $versions = $this->versions('products', $id, 'details', 0, 5);
-        $versions = Core::iterate($versions, function ($version) {
-            if ($version['old_data']) {
-                $version['old_data'] = substr($version['old_data'], 0, 10);
-            }
-            if ($version['new_data']) {
-                $version['new_data'] = substr($version['new_data'], 0, 10);
-            }
+        if ($id) {
+            $versions = $this->versions('products', $id, 'details', 0, 5);
+            $versions = Core::iterate($versions, function ($version) {
+                if ($version['old_data']) {
+                    $version['old_data'] = substr($version['old_data'], 0, 10);
+                }
+                if ($version['new_data']) {
+                    $version['new_data'] = substr($version['new_data'], 0, 10);
+                }
 
-            if ($version['operation'] === 'UPDATE') {
-                return ['name' => implode(', ', Core::extractKeys($version, ['column_name', 'created', 'old_data', 'new_data'])), 'value' => $version['id']];
-            }
-        });
-        $data['versions'] = new Select('version', $versions, $version, $this->translations, '');
-        $data['versions']->addHtmlAttribute('data-change="submit"');
+                if ($version['operation'] === 'UPDATE') {
+                    return ['name' => implode(', ', Core::extractKeys($version, ['column_name', 'created', 'old_data', 'new_data'])), 'value' => $version['id']];
+                }
+            });
+            $data['versions'] = new Select('version', $versions, $version, $this->translations, '');
+            $data['versions']->addHtmlAttribute('data-change="submit"');
+        } else {
+            $data['versions'] = '---';
+        }
 
         $out['comp_admin_product'] = [$data];
-        $out[self::REFRESH] = [['id' => 'product_' . $id, 'html' => trim((string)$this->productrefresh($id))]];
+        if ($id) {
+            $out[self::REFRESH] = [['id' => 'product_' . $id, 'html' => trim((string)$this->productrefresh($id))]];
+        }
 
 
         return $out;

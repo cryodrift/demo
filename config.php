@@ -148,6 +148,7 @@ $cfg[\cryodrift\demo\ComponentConfig::class] = [
       ['admin', 'user', ['id']],
       ['admin', 'products'],
       ['admin', 'product', ['id']],
+      ['admin', 'newproduct'],
       ['admin', 'images'],
       ['admin', 'image', ['id']],
     ],
@@ -157,7 +158,7 @@ $cfg[\cryodrift\demo\ComponentConfig::class] = [
     'comp_admin_users' => [['admin', 'users']],
     'comp_admin_user' => [['admin', 'user', ['id']]],
     'comp_admin_products' => [['admin', 'products'], ['admin', 'products', ['search']]],
-    'comp_admin_product' => [['admin', 'product', ['id']]],
+    'comp_admin_product' => [['admin', 'product', ['id']], ['admin', 'newproduct']],
     'comp_admin_images' => [['admin', 'images']],
     'comp_admin_image' => [['admin', 'image', ['id']]],
     'comp_about' => ['about'],
@@ -244,8 +245,8 @@ $cfg[\cryodrift\demo\Translations::class] = [
   'demo' => \cryodrift\demo\Web::class,
   'demo/api' => \cryodrift\demo\Api::class,
   'demo/images' => [[\cryodrift\demo\FileHandler::class, 'external']],
-  'infinityscroll' => [[\cryodrift\demo\FileHandler::class, 'folder',['assetdir'=>'demo/ui/infinityscroll']]],
-  'demo/js' => [[\cryodrift\demo\FileHandler::class, 'folder',['assetdir'=>'demo/ui/js']]],
+  'infinityscroll' => [[\cryodrift\demo\FileHandler::class, 'folder', ['assetdir' => 'demo/ui/infinityscroll']]],
+  'demo/js' => [[\cryodrift\demo\FileHandler::class, 'folder', ['assetdir' => 'demo/ui/js']]],
 ], \cryodrift\fw\Router::TYP_WEB);
 
 \cryodrift\fw\FileHandler::addConfigs($ctx, [
