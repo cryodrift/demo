@@ -8,7 +8,6 @@
  * @env DEMO_GOOGLEAPIKEY=""
  */
 
-use cryodrift\demo\comp\config\Api;
 use cryodrift\demo\ComponentConfig;
 use cryodrift\fw\Core;
 
@@ -72,7 +71,8 @@ $cfg[\cryodrift\demo\Api::class] = [
 
 $cfg[\cryodrift\demo\ComponentConfig::class] = [
   'class' => [
-    'comp_admin_config' => Api::class
+    'comp_admin_*' => \cryodrift\demo\comp\admin\Hub::class,
+    'cont_admin' => \cryodrift\demo\comp\admin\Hub::class
   ],
   'roles' => [
     ComponentConfig::ROLE_ADMIN => [

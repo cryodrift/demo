@@ -8,10 +8,11 @@ use cryodrift\fw\tool\DbHelperStatic;
 class UserDb extends DbHelperStatic
 {
     private array $data = [];
+    const string DBFILE = 'demo.sqlite';
 
     public function __construct(string $userid, string $storage)
     {
-        $this->connect('sqlite:' . $storage . $userid . '/demo.sqlite');
+        $this->connect('sqlite:' . $storage . $userid . '/' . self::DBFILE);
         $data = $this->runSelect('account')->fetch();
         if ($data) {
             $this->data = $data;

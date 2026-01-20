@@ -39,13 +39,13 @@ trait ComponentHelper
         $output = [];
         try {
             if ($this->compconfig->canAccess($compname, Core::getValue('role', $this->db->account()))) {
-                // this is to get data from url parts ,settup in component config
+                // this is to get data from url parts ,setup in component config
                 $path = Path::fromUrl($url);
                 $info = $this->compconfig->info($path, $compname);
 
                 if ($this->compconfig->hasClass($compname)) {
-                    $comp = $this->compconfig->getHandler($compname);
-                    $params = Core::getParams($comp, 'update', [...$info->params, ...$ctx->request()->vars()], $ctx, false);
+                    $comp = $this->compconfig->getHandler($ctx, $compname);
+                    $params = Core::getParams($comp, 'update', ['params' => [...$info->params, ...$ctx->request()->vars()]], $ctx, false);
                     $output = $comp->update(...$params);
                 } elseif (method_exists($this->db, $compname)) {
                     $params = Core::getParams($this->db, $compname, [...$info->params, ...$ctx->request()->vars()], $ctx, false);
@@ -94,8 +94,8 @@ trait ComponentHelper
         $template = $template ?: $component;
         $source = [...$urlparams, ...Core::removeKeys([$this->config->actionmethod], $ctx->request()->vars())];
         if ($this->compconfig->hasClass($component)) {
-            $comp = $this->compconfig->getHandler($component);
-            $params = Core::getParams($comp, 'render', [...$source, 'data' => $output], $ctx);
+            $comp = $this->compconfig->getHandler($ctx, $component);
+            $params = Core::getParams($comp, 'render', ['params' => $source], $ctx);
             $ui = $comp->render(...$params);
         } else {
             $ui = HtmlUi::fromString(Core::fileReadOnce(Main::path($this->tpldir . $template . '.html')), $template);

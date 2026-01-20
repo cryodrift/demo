@@ -1,0 +1,19 @@
+<h1>{{Account Settings}}</h1>
+<div class="g-card">
+    <form class="g-formgroup  g-list" data-keydown="press|Enter|tab" method="POST" action="/demo/api/formloader/comp_admin_user">
+        <input type="hidden" name="{{actionmethod}}" value="MOD">
+        <div class=" g-row g-mb1">
+            <label><span>{{Name}}</span><input type="text" name="name" value="{{name}}" autocomplete="username" required/></label>
+        </div>
+        <div class=" g-row g-mb1">
+            <label><span>{{Email}}</span><input type="email" name="email" value="{{email}}" autocomplete="email" required/></label>
+        </div>
+        <div class=" g-row g-mb1">
+            <label><span>{{Role}}</span>
+                {{roles}}
+            </label>
+        </div>
+        <button type="submit" class="g-btn g-btn-base">{{Update Settings}}</button>
+        <a href="/demo/admin/users" data-click="back" class="g-btn g-btn-base g-btn-secondary" style="margin-left: 0.5rem;">{{Back}}</a>
+    </form>
+</div>

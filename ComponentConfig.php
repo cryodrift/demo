@@ -2,6 +2,7 @@
 
 namespace cryodrift\demo;
 
+use cryodrift\fw\Context;
 use cryodrift\fw\Core;
 use cryodrift\fw\Path;
 use Exception;
@@ -11,20 +12,35 @@ class ComponentConfig
     const string ROLE_ADMIN = 'admin';
     const string ROLE_USER = 'user';
     const string ROLE_UNKNOWN = 'unknown';
+    protected array $instances = [];
 
     public function __construct(private readonly array $roles, private readonly array $routes, private readonly array $update, private array $class)
     {
     }
 
-    public function getHandler(string $component): Component
+    public function getHandler(Context $ctx, string $component): Component
     {
-        $class = $this->getClass($component);
-        return new $class($component);
+        if (!array_key_exists($component, $this->instances)) {
+            $this->instances[$component] = Core::newObject($this->getClass($component), $ctx, ['component' => $component]);
+        }
+        return $this->instances[$component];
     }
 
     public function getClass(string $component): string
     {
-        return Core::value($component, $this->class);
+        foreach ($this->class as $compname => $class) {
+            if (str_ends_with($compname, '*')) {
+                $compname = rtrim($compname, '*');
+                if (str_starts_with($component, $compname)) {
+                    return $class;
+                }
+            } else {
+                if ($compname === $component) {
+                    return $class;
+                }
+            }
+        }
+        return '';
     }
 
     public function hasClass(string $component): string
@@ -104,4 +120,5 @@ class ComponentConfig
     {
         return in_array($component, Core::getValue($role, $this->roles(), []));
     }
+
 }

@@ -37,7 +37,6 @@ trait RepositoryBase
     protected function getUserDb(string $userid): UserDb
     {
         $user = new UserDb($userid, $this->storagedir);
-//        $user->getPdo()->sqliteCreateFunction('current_user_id', fn() => $this->userid);
         return $user;
     }
 

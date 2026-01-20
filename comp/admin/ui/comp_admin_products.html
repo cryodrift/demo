@@ -1,0 +1,21 @@
+<div class="g-row g-between g-list">
+    <h1>{{All Products}}</h1>
+    <a href="/demo/admin" data-click="back" class="g-btn g-btn-base g-btn-secondary">{{Back}}</a>
+</div>
+<div class="g-card">
+    <form class="g-row" action="/demo/api/formloader/cont_admin_products" method="POST" data-formloader-before="{{data-formloader-before}}" data-formloader-after="{{data-formloader-after}}">
+        <label class="g-row"><span class="g-dh">{{Browse Products}}</span>
+            <input type="search" name="search" value="{{search}}" placeholder="{{Search Product by title, author, or description...}}" class="g-f g-p1 g-ph g-w"/>
+        </label>
+        <button type="submit" class="g-btn g-btn-base">{{Search}}</button>
+    </form>
+</div>
+<a href="/demo/admin/newproduct">New</a>
+{{@file@}}demo/ui/scrolltools.html{{@file@}}
+<div id="productslist" class="g-scroll g-fc g-h" data-now-handler="{{data-now-handler}}" data-scroll="{{data-scroll}}">
+    {{@file@}}demo/comp/admin/ui/comp_admin_products_page.html{{@file@}}
+</div>
+
+
+
+

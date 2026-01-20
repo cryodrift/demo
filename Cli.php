@@ -6,7 +6,6 @@ namespace cryodrift\demo;
 
 use cryodrift\demo\db\FtsProducts;
 use cryodrift\demo\db\Repository;
-use cryodrift\files\Api;
 use cryodrift\fw\cli\CliUi;
 use cryodrift\fw\cli\Colors;
 use cryodrift\fw\cli\ParamFile;
@@ -16,14 +15,10 @@ use cryodrift\fw\cli\ParamSure;
 use cryodrift\fw\Config;
 use cryodrift\fw\Context;
 use cryodrift\fw\Core;
-use cryodrift\fw\FakeFileInfo;
 use cryodrift\fw\interface\Handler;
 use cryodrift\fw\interface\Installable;
-use cryodrift\fw\Main;
 use cryodrift\fw\Reflect;
 use cryodrift\fw\trait\CliHandler;
-use cryodrift\htmldb\db\User;
-use cryodrift\user\ParamType;
 use Exception;
 use ReflectionMethod;
 
@@ -344,7 +339,7 @@ class Cli implements Handler, Installable
     {
         $transfiles = Core::iterate(Core::dirList(__DIR__ . '/trans'), fn(\SplFileInfo $f) => [$f->getFilename(), include $f->getPathname()], true);
 
-        $data = Core::iterate(Core::dirList(__DIR__ . '/ui'), function (\SplFileInfo $file) use ($transfiles) {
+        $data = Core::iterate(Core::dirList(__DIR__), function (\SplFileInfo $file) use ($transfiles) {
             if ($file->getExtension() === 'html') {
                 $parts = explode('{{', Core::fileReadOnce($file->getRealPath()));
                 foreach ($parts as $part) {

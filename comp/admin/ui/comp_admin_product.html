@@ -1,0 +1,79 @@
+<div class="g-row g-between g-list">
+    <h1>{{Product}}</h1>
+    <a href="/demo/admin/products" data-click="back" class="g-btn g-btn-base g-btn-secondary">{{Back}}</a>
+    <input type="hidden" name="id" value="{{id}}">
+    <input type="hidden" name="cartid" value="{{cartid}}">
+</div>
+
+<div class="g-card g-list g-fc g-h g-scroll">
+    <form method="post" action="/demo/api/formloader/comp_admin_product">
+        <input type="hidden" name="{{actionmethod}}" value="VER">
+        <label><span>Versions</span>
+            {{versions}}
+        </label>
+    </form>
+
+    <form class="g-formgroup" method="POST" data-formloader-before="/component.js btn|save|id btn|new|id" data-input="addclass|button[name=save]|g-btn-secondary ifchange|self\\input|self\\textarea|self\\select|self\\checkbox remclass|button[name=save]|g-btn-secondary" data-keydown="press|Enter|tab" action="/demo/api/formloader/comp_admin_product" autocomplete="on">
+        <input type="hidden" name="{{actionmethod}}" value="MOD">
+        <input type="hidden" name="id" value="{{id}}">
+        <div class="g-actions">
+            <p class="g-gr"><strong>{{Date}}</strong>{{created}}</p>
+            <p class="g-gr"><strong>{{InCheckouts}}</strong>{{checkout}}</p>
+            <p class="g-gr"><strong>{{Sold}}</strong>{{sold}}</p>
+            <button type="submit" class="g-btn g-btn-base g-btn-secondary g-btn-small" name="save" value="{{id}}">{{Save}}</button>
+            <button type="submit" class="g-btn g-btn-base g-btn-secondary g-btn-small" name="new" value="">{{New}}</button>
+        </div>
+
+        <div class="g-f g-frc g-m1 g-ml g-mr g-taicc g-p1c g-plc g-ptc g-pbc">
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Active}}</span>
+                <input type="hidden" name="isactive" value="0">
+                <input type="checkbox" name="isactive" value="1" {{isactive}}>
+            </label>
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Currency}}</span>
+                {{currency}}
+            </label>
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Stock}}</span>
+                <input type="number" name="stock" value="{{stock}}" min="0">
+            </label>
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Price}}</span>
+                <input type="number" step="0.01" min="0" name="price" value="{{price}}">
+            </label>
+        </div>
+
+        <div class="g-f g-frc g-m1 g-ml g-mr g-mt g-taicc g-p1c g-plc g-ptc g-pbc">
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Template Preview}}</span>
+                {{tplprev}}
+            </label>
+
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Template Full}}</span>
+                {{tplfull}}
+            </label>
+
+            <label>
+                <span class="g-m1 g-ml g-mt g-mb">{{Slug}}</span>
+                <input class="g-w9 g-wd" type="text" name="slug" value="{{slug}}">
+            </label>
+        </div>
+
+        <div class="">
+            <h3 class="">{{Details}}</h3>
+            <label class="g-mc1 g-mtc g-mbc g-mrc g-taic g-f g-fjcbc">
+                <span class="g-w4">{{New field}}</span>
+                <input class="g-btn-small" type="text" data-keyup="adddetail|#insert_new_detail stop" placeholder="{{New name}}">
+                <template>
+                    {{@file@}}demo/comp/admin/ui/detailsinput.html{{@file@}}
+                </template>
+            </label>
+            <div id="insert_new_detail"></div>
+            {{details}}
+        </div>
+
+    </form>
+
+</div>

@@ -1,0 +1,20 @@
+{{@}}searchform{{@}}
+<div class="g-card">
+    <form class="g-row" action="/demo/api/formloader/comp_admin_images" method="POST" data-formloader-before="{{data-formloader-before}}" data-formloader-after="{{data-formloader-after}}">
+        <label class="g-row"><span class="g-dh">{{Search Images}}</span>
+            <input type="search" name="search" value="{{search}}" placeholder="{{Search Image by Dir...}}" class="rmx-fukl4m"/>
+        </label>
+        <button type="submit" class="g-btn g-btn-base">{{Search}}</button>
+    </form>
+</div>
+{{@}}searchform{{@}}
+
+{{superselect}}
+{{@file@}}demo/ui/scrolltools.html{{@file@}}
+<div id="imageslist" data-scroll-classes="g-fw" class="g-scroll g-fc g-h" data-now-handler="{{data-now-handler}}" data-scroll="{{data-scroll}}">
+    <div class="g-bar-center" style="height: 350px" data-scrollable-page="{{page}}">
+        {{@}}row{{@}}
+        <a class="g-h" href="/demo/admin/image/{{id}}"><img alt="{{reldir}}" class="g-h" style="aspect-ratio: 1" src="/demo/images/{{src}}?t=1"></a>
+        {{@}}row{{@}}
+    </div>
+</div>

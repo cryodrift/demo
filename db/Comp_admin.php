@@ -86,7 +86,7 @@ trait Comp_admin
 
         $out['comp_admin_order'] = [$order];
         $id = Core::value('id', $order);
-        $refresh = HtmlUi::fromFile('/demo/ui/comp_admin_orders_page.html')->fromBlock('row')->setAttributes($order);
+        $refresh = HtmlUi::fromFile('/demo/comp/admin/ui/comp_admin_orders_page.html')->fromBlock('row')->setAttributes($order);
         $refresh->setAttributes($this->translations->translation());
         $out[self::REFRESH] = [['id' => 'order_' . $id, 'html' => trim((string)$refresh)]];
 //        Core::echo(__METHOD__, $out);
@@ -153,14 +153,18 @@ trait Comp_admin
         $dirs = Core::dirList($this->storagedir, fn(SplFileInfo $p, $d) => $p->isDir() && $d < 1);
         $users = Core::iterate($dirs, function (SplFileInfo $d) {
             $id = $d->getFilename();
-            $db = $this->getUserDb($id);
-            if ($db->getEmail()) {
-                return [
-                  'id' => $id,
-                  'name' => $db->getName(),
-                  'email' => $db->getEmail(),
-                  'role' => $db->getRole(),
-                ];
+            try {
+                Core::echo(__METHOD__,'ID',$id);
+                $db = $this->getUserDb($id);
+                if ($db->getEmail()) {
+                    return [
+                      'id' => $id,
+                      'name' => $db->getName(),
+                      'email' => $db->getEmail(),
+                      'role' => $db->getRole(),
+                    ];
+                }
+            } catch (\Throwable $ex) {
             }
         });
         $out['comp_admin_users'] = [
@@ -235,7 +239,7 @@ trait Comp_admin
     {
         $out = [];
         $data = $this->runSelect('products', ['id'], ['id' => $id])->fetch();
-        return HtmlUi::fromFile('/demo/ui/comp_admin_products_page.html')->fromBlock('row')->setAttributes($data)->setAttributes($this->translations->translation());
+        return HtmlUi::fromFile('/demo/comp/admin/ui/comp_admin_products_page.html')->fromBlock('row')->setAttributes($data)->setAttributes($this->translations->translation());
     }
 
     public function comp_admin_products_page(FtsProducts $fts, array $data = [], int $admin_limit = 10, string $search = ''): array
@@ -484,7 +488,7 @@ trait Comp_admin
         $out = [];
         // iterate data an create input for each
         foreach ($data as $key => $value) {
-            $out[] = HtmlUi::fromFile('/demo/ui/detailsinput.html')->setAttributes(['key' => $key, 'value' => $value]);
+            $out[] = HtmlUi::fromFile('/demo/comp/admin/ui/detailsinput.html')->setAttributes(['key' => $key, 'value' => $value]);
         }
 
         return HtmlUi::fromString()->setAttributes($out);
